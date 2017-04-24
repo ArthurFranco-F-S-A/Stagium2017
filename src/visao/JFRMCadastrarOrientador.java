@@ -5,12 +5,17 @@
  */
 package visao;
 
+import controle.OrientadorControle;
+import modelo.OrientadorDoEstagioBEAN;
+
 /**
  *
  * @author user
  */
 public class JFRMCadastrarOrientador extends javax.swing.JFrame {
-
+    
+    private OrientadorControle oriControl = new OrientadorControle();
+    
     /**
      * Creates new form JFRMCadastrarCursos
      */
@@ -154,7 +159,7 @@ public class JFRMCadastrarOrientador extends javax.swing.JFrame {
                 .addComponent(lblName4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblName5)
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         lblName6.setFont(new java.awt.Font("MV Boli", 1, 36)); // NOI18N
@@ -190,6 +195,11 @@ public class JFRMCadastrarOrientador extends javax.swing.JFrame {
 
         BTNCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add-contactsPqn.png"))); // NOI18N
         BTNCadastrar.setText("Cadastrar");
+        BTNCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNCadastrarActionPerformed(evt);
+            }
+        });
 
         BTNLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/trash-bin-symbolPqn.png"))); // NOI18N
         BTNLimpar.setText("Limpar");
@@ -388,6 +398,23 @@ public class JFRMCadastrarOrientador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TFAreaActionPerformed
 
+    private void BTNCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNCadastrarActionPerformed
+        boolean campos = this.verificaCampos();
+        
+        if (campos == true) {
+            OrientadorDoEstagioBEAN ori = new OrientadorDoEstagioBEAN();
+            
+            ori.setNome(TFNome.getText());
+            ori.setEmail(TFEmail.getText());
+            ori.setEndereco(TFEndereco.getText());
+            ori.setFone(FTFTelefone.getText());
+            ori.setCelular(FTFCelular.getText());
+            ori.setArea(TFArea.getText());
+            
+            boolean r = oriControl.cadastrar(ori);
+        }
+    }//GEN-LAST:event_BTNCadastrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -472,4 +499,13 @@ public class JFRMCadastrarOrientador extends javax.swing.JFrame {
     private javax.swing.JLabel lblName6;
     private javax.swing.JLabel lblName7;
     // End of variables declaration//GEN-END:variables
+
+    private boolean verificaCampos() {
+        if(("".equals(TFNome.getText())) || ("".equals(TFEmail.getText())) 
+                || ("".equals(TFEndereco.getText())) || ("".equals(TFArea.getText()))
+                || (FTFTelefone.getText().length() < 13) || (FTFCelular.getText().length() < 15) ){
+            return false;
+        }
+        return true;
+    }
 }
